@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{%load static%}
+
+{% load django_bootstrap_breadcrumbs %}
+
+{% block breadcrumbs %}
+    {{ block.super }}
+    {% breadcrumb "Cadastrar Bolsista" "cad_bolsista" %}
+{% endblock %}
+
+
+{%block content%}
+{% render_breadcrumbs %}
+<form method="post">
+    {%csrf_token%}
+    {% for error in form.non_field_errors %}
+    <div class="form-group has-errors text-danger small">
+        {{error}}
+    </div>
+    {%endfor%}
+    {% for field in form %}
+     <div class="form-group">
+        <div class="row">
+            <div class="col-md-2 col-sm-2">
+              {{ field.label_tag }}
+            </div>
+            <div class="col-md-8 col-sm-8">
+                
+                {{ field }} {% if field.name == 'cartao_rfid' %}<p id="rf" style="margin: 0px; cursor: pointer; color: blueviolet;">Click aqui, posicione o cartão RFID e aguarde!</p>{%endif%}
+                
+                
+            </div>
+
+        </div>
+            {{ field.errors }}
+    </div>
+    {% endfor %}
+
+    <button type="submit" class="btn btn-primary">Salvar</button>
+    </div>
+</form>
+{% endblock %}
+{%block javascript%}
+
+
+<script>
+        $('#rf').on('click', function(){
+        $.get('/teste_aja/', function(data){
+            if(data.key_value == ''){
+                alert('Erro ao ler cartão, tente novamente.');
+            }else{
+                alert("Leitura realizada com sucesso "+data.key_value);
+                document.getElementById("id_cartao_rfid").value = data.key_value;
+            }
+            
+        });
+      });
+
+//<script type="text/javascript">
+//    $(document).ready(function(){
+
+//      $('.btn').click(function(){
+//        $.get('/teste_aja/', function(data){
+            /*alert(data.text);*/
+//            document.getElementById("id_cartao_rfid").value = data.key_value;
+//        });
+//      });
+  
+//    });
+</script>
+{%endblock%}

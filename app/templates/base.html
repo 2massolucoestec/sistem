@@ -1,0 +1,131 @@
+
+<!doctype html>
+{%load static%}
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="{%static 'img/ICOLEADS.png'%}">
+
+    <title>PROJETO LEDS</title>
+
+    <!-- Bootstrap core CSS -->
+
+   <link href="{% static 'css/bootstrap/bootstrap.min.css'%}" rel="stylesheet">
+   <link href="{% static 'css/custom2.css' %}" rel="stylesheet">
+    <!-- Custom styles for this template -->
+
+  </head>
+
+  <body>
+
+    <header>
+      <!-- Fixed navbar -->
+      <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+        <a class="navbar-brand" href="{%url 'app:home'%}">LEDS</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+          <ul class="navbar-nav mr-auto">
+            <!--<li class="nav-item">
+              <a class="nav-link" href="{%url 'app:list_orientador'%}">Orientador</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{%url 'app:list_bolsista'%}">Bolsista</a>
+            </li>
+           <li class="nav-item">
+              <a class="nav-link" href="{%url 'app:relatorio_op'%}">Relatorios</a>
+            </li>-->
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Orientador
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="{%url 'app:create_orientador'%}">Cadastrar</a>
+                <a class="dropdown-item" href="{%url 'app:list_orientador'%}">Listar</a>
+            </li>
+
+            <li class="nav-item dropdown" >
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Bolsista
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="{%url 'app:create_bolsista'%}">Cadastrar</a>
+                <a class="dropdown-item" href="{%url 'app:list_bolsista'%}">Listar</a>
+            </li>
+
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Relatório
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="{%url 'app:ac'%}">Por Bolsista</a>
+                <a class="dropdown-item" href="{%url 'app:ap'%}">Por Periodo</a>
+            </li>
+          </ul>
+          <form class="mt-2 mt-md-0">
+            {% if user.is_authenticated %}
+
+            <ul class="navbar-nav">
+                <li><a class="nav-link" href="{% url 'app:registrar' %}">Cadastrar Usuario Comum</a></li>
+                <li><a class="nav-link" href="{% url 'app:sair' %}">Sair</a></li>
+            {% else %}
+                <li class="nav-item"><a class="nav-link" href="#"></a></li>
+            {% endif %}
+          </form>
+        </div>
+      </nav>
+    </header>
+
+    <!-- Begin page content -->
+
+
+    <main role="main" class="container">
+    {% load django_bootstrap_breadcrumbs %}
+
+    {% block breadcrumbs %}
+        {% clear_breadcrumbs %}
+        {% breadcrumb "Home" "/" %}
+    {% endblock %}
+
+
+
+    {% block content %}
+    {% render_breadcrumbs %}
+    {% endblock %}
+    </main>
+
+      
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script> -->
+
+  <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+  <script src="{% static 'js/popper.min.js' %}"></script>
+  <script src="{% static 'js/bootstrap.min.js' %}"></script>
+
+    {%block javascript%}
+    <script>
+      (function($) {
+          'use strict';
+          $(function() {
+              $('.cancel-link').click(function(e) {
+                  e.preventDefault();
+                  window.history.back();
+              });
+          });
+      });
+      </script>
+
+    {%endblock%}
+
+
+  </body>
+</html>

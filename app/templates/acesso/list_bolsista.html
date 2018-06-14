@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{%load static%}
+
+{% load django_bootstrap_breadcrumbs %}
+
+{% block breadcrumbs %}
+    {{ block.super }}
+    {% breadcrumb "Lista de Acessos" "list_acesso" %}
+{% endblock %}
+
+
+{%block content%}
+{% render_breadcrumbs %}
+    <legend>Acessos</legend>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Bolsista</th>
+            <th>Data</th>
+            <th>Entrada</th>
+            <th>Saída</th>
+            <th>Permanência</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for acesso in acessos %}
+            <tr>
+                <td>{{ acesso.bolsista }}</td>
+                <td>{{acesso.data}}</td>
+                <td>{{ acesso.hora_entrada}}</td>
+                <td>{{ acesso.hora_saida }}</td>
+                <td>{{ acesso.total_horas}}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

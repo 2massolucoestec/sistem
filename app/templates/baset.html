@@ -1,0 +1,25 @@
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
+
+<div class="projeto">
+  <h1>Este é o projeto 1</h1>
+  <p class="btn" id="1" style="cursor: pointer">Clique para mais dados sobre este projeto</p>
+</div>
+<div class="projeto">
+  <h1>Este é o projeto 2</h1>
+  <p class="btn" id="2"  style="cursor: pointer">Clique para mais dados sobre este projeto</p>
+  <input type="text" id="tt" disabled>
+</div>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+
+    $('.btn').click(function(){
+      var id = $(this).attr('id');
+      $.get('/teste_ajax/' + id, function(data){
+          /*alert(data.text);*/
+          document.getElementById("tt").value = data.valu;
+      });
+    });
+
+  });
+</script>

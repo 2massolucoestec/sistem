@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+{%load static%}
+
+{% load django_bootstrap_breadcrumbs %}
+
+{% block breadcrumbs %}
+    {{ block.super }}
+    {% breadcrumb "Cadastrar Bolsista" "cad_bolsista" %}
+{% endblock %}
+
+
+{%block content%}
+{% render_breadcrumbs %}{% load bootstrap4 %}
+
+<h2>Cadastro Bolsista</h2>
+
+<form method="post">
+   
+    {%csrf_token%}
+{% load widget_tweaks %}
+
+{% for hidden_field in form.hidden_fields %}
+  {{ hidden_field }}
+{% endfor %}
+
+{% if form.non_field_errors %}
+  <div class="alert alert-danger" role="alert">
+    {% for error in form.non_field_errors %}
+      {{ error }}
+    {% endfor %}
+  </div>
+{% endif %}
+
+{% for field in form.visible_fields %}
+  
+  <div class="form-group ">
+
+    {{ field.label_tag }}
+
+    {% if form.is_bound %}
+
+      {% if field.errors %}
+      {% if field.name == 'nome' %}
+        {% render_field field class="form-control col-md-6 is-invalid" %}
+        {%else%}
+        {% render_field field class="form-control  col-md-3 is-invalid" %}
+        {%endif%}
+        {% for error in field.errors %}
+          <div class="invalid-feedback">
+            {{ error }}
+          </div>
+        {% endfor %}
+      {% else %}
+        {% if field.name == 'nome' %}
+        {% render_field field class="form-control col-md-6 is-valid" %}
+        {%else%}
+        {% render_field field class="form-control  col-md-3 is-valid" %}
+        {%endif%}
+        {% endif %}
+    {% else %}
+      {% if field.name == 'nome' %}
+      {% render_field field class="form-control  col-md-6" %}
+      {%else%}
+      {% render_field field class="form-control  col-md-3" %}
+      {%endif%}
+    {% endif %}
+
+    {% if field.help_text %}
+      <small class="form-text text-muted">{{ field.help_text }}</small>
+    {% endif %}
+{% if field.name == 'cartao_rfid' %}<p id="rf" >Click aqui, posicione o cartão RFID e aguarde!</p>{%endif%}
+  </div>
+
+{% endfor %}
+{% buttons %}
+        <button type="submit" class="btn btn-primary">Salvar</button>
+    {% endbuttons %}
+</form>
+
+
+{% endblock %}
+{%block javascript%}
+
+
+        $('#rf').on('click', function(){
+        $.get('/teste_aja/', function(data){
+            if(data.key_value == ''){
+                alert('Erro ao ler cartão, tente novamente.');
+            }else{
+                alert("Leitura realizada com sucesso "+data.key_value);
+                document.getElementById("id_cartao_rfid").value = data.key_value;
+            }
+            
+        });
+      });
+
+    $('input').keyup(function(){
+    this.value = this.value.toUpperCase();
+});
+
+
+//    $(document).ready(function(){
+
+//      $('.btn').click(function(){
+//        $.get('/teste_aja/', function(data){
+            /*alert(data.text);*/
+//            document.getElementById("id_cartao_rfid").value = data.key_value;
+//        });
+//      });
+  
+//    });
+{%endblock%}

@@ -1,0 +1,57 @@
+<!doctype html>
+{%load static%}
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="{%static 'img/ICOLEADS.png'%}">
+
+    <title>LEDS LOGIN</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'css/bootstrap/bootstrap.min.css'%}" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="{% static 'css/styles.css' %}" rel="stylesheet">
+  </head>
+
+  <body style="background: #373435;"">
+    <form class="form-signin" method="post">
+
+      <div class="text-center mb-4">
+        <img class="mb-4" src="{%static 'img/img_leds.png'%}" alt="" width="250">
+
+      </div>
+    {%csrf_token%}
+    {% for error in form.non_field_errors %}
+    <div class="form-group has-errors text-warning large" >
+        {{error}}
+    </div>
+    {%endfor%}
+
+    {% for field in form %}
+    <div class="form-group">
+      <div class="log">
+        <label style="color: white;">{{ field.label_tag }}</label>
+        </div>
+        <div class="log">
+        {{field}}
+        </div>
+        <div class="log">
+        {{ field.errors }}
+        </div>
+    </div>
+    {% endfor %}
+
+      <button class="btn btn-lg btn-primary btn-block" type="submit">Entrar</button>
+
+    </form>
+
+    <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+    <script src="{% static 'js/popper.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+
+  </body>
+</html>

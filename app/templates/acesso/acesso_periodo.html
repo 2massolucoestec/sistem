@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{%load static%}
+
+{% load django_bootstrap_breadcrumbs %}
+
+{% block breadcrumbs %}
+    {{ block.super }}
+    {% breadcrumb "Relatório por periodo" "cad_professor" %}
+{% endblock %}
+
+
+{%block content%}
+{% render_breadcrumbs %}
+<form method="post">
+    {%csrf_token%}
+    {% for error in form.non_field_errors %}
+    <div class="form-group has-errors text-danger small">
+        {{error}}
+    </div>
+    {%endfor%}
+    
+     <div class="form-inline">
+        <label class="sr-only" for="inlineFormInput">De</label>
+        <input type="date" class="form-control mb-2 mr-sm-2 mb-sm-0" id="data_" name="data_">
+        <label class="sr-only" for="inlineFormInput">Até</label>
+        <input type="date" class="form-control mb-2 mr-sm-2 mb-sm-0" id="data_f" name="data_f">
+        <a href="{%url 'app:list' 'data_' 'data_f'%}"><button type="submit" class="btn btn-primary">Gerar Relatório</button></a>
+    </div>      
+    </div>
+</form>
+{% endblock %}

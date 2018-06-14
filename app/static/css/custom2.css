@@ -1,0 +1,59 @@
+:root {
+  --input-padding-x: .75rem;
+  --input-padding-y: .75rem;
+}
+
+input#id_nome{
+
+}
+html,
+body {
+  height: 100%;
+}
+
+body {
+
+  padding-top: 75px;
+  padding-bottom: 15%;
+  background-color: #dddddd;
+}
+
+
+
+footer {
+    position: fixed;
+    height: 100px;
+    bottom: 0;
+    width: 100%;
+}
+
+
+.list-group{
+  padding-top: 5px;
+  padding-bottom: 5px;
+
+}
+
+.list-group-item{
+  background-color: #D3D3D3;
+  color: #000;
+  border-color: gray;
+}
+
+.dropdown-menu{
+  background-color: #343a40;
+  color:gray;
+  border: 0px;
+}
+
+.dropdown-item{
+  color: white;}
+
+
+input{
+    text-transform:uppercase;
+}
+
+ul.errorlist {
+    color: red;
+}

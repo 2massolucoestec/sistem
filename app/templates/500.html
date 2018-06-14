@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{%load static%}
+
+{% block content %}
+
+<div align="center" style="align-items: center;">
+	<img src="{% static 'img/warning.png'%}">
+    <h1 style="text-align: center;">Algo de errado aconteceu</h1>
+    <p style="text-align: center;">Volte para página ínicial</p>
+    <a href="{%url 'app:home'%}"><button class="btn btn-primary">Página Inicial
+	</button></a>
+</div>   
+
+
+{% endblock %}

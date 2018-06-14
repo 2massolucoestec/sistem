@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{%load static%}
+
+{% load django_bootstrap_breadcrumbs %}
+
+{% block breadcrumbs %}
+    {{ block.super }}
+    {% breadcrumb "Cadastrar Acesso" "cad_acesso" %}
+{% endblock %}
+
+
+{%block content%}
+{% render_breadcrumbs %}
+    <legend>Bolsistas</legend>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Bolsista</th>
+            <th>Registrar Entrada</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for bolsista in bolsistas %}
+            <tr>
+                <td>{{ bolsista.nome }}</td>
+                <td><a href="{%url 'app:test_acesso' bolsista.id%}"><img alt="" src="{% static 'img/edit.png'%}"></a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

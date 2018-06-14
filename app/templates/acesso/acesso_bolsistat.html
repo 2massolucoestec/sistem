@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{%load static%}
+
+{% load django_bootstrap_breadcrumbs %}
+
+{% block breadcrumbs %}
+    {{ block.super }}
+    {% breadcrumb "Relatorio por Bolsista" "acesso_bolsista" %}
+{% endblock %}
+
+
+{%block content%}
+{% render_breadcrumbs %}
+    <legend>Bolsistas</legend>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Nome</th>
+            <th>Gerar Relatorio</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for bolsista in bolsistas %}
+            <tr>
+                <td>{{ bolsista.nome }}</td>
+                <td><a href="{%url 'app:RelatorioBolsista' bolsista.id%}"><img alt="" src="{% static 'img/filez.png'%}" width="15" height="15"></a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

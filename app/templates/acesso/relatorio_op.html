@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{%load static%}
+
+{% load django_bootstrap_breadcrumbs %}
+
+{% block breadcrumbs %}
+    {{ block.super }}
+    {% breadcrumb "Relatórios" "list_professor" %}
+{% endblock %}
+
+
+{%block content%}
+{% render_breadcrumbs %}
+
+    <legend>Gerar Relatório</legend>
+    <a href="{%url 'app:act'%}"><button class="btn btn-primary">Por Bolsista
+</button></a>
+<a href="{%url 'app:ap'%}"><button class="btn btn-primary">Por Periodo
+</button></a>
+
+{%endblock%}

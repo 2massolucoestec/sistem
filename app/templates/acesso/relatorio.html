@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{%load static%}
+
+{% load django_bootstrap_breadcrumbs %}
+
+{% block breadcrumbs %}
+    {{ block.super }}
+    {% breadcrumb "Relatorio por Periodo" "acesso_bolsista" %}
+{% endblock %}
+
+
+{%block content%}
+{% render_breadcrumbs %}
+<legend>Relatório por Periodo</legend>
+<form method="post">
+    {%csrf_token%}
+    {% for error in form.non_field_errors %}
+    <div class="form-group has-errors text-danger small">
+        {{error}}
+    </div>
+    {%endfor%}
+
+     <div class="form-inline">
+     <label class="mr-sm-2" for="inlineFormCustomSelect">Selecione o Bolsista</label>
+    <select class="custom-select mb-2 mr-sm-2 mb-sm-0" id="inlineFormCustomSelect" id="select_bolsista" name="select_bolsista">
+    <option selected value="0">TODOS</option>
+    {%for bolsista in bolsistas%}
+    <option value="{{bolsista.id}}">{{bolsista.nome}}</option>
+    {%endfor%}
+    <label class="sr-only" for="inlineFormInput">De</label>
+    <input type="date" class="form-control mb-2 mr-sm-2 mb-sm-0" id="data_" name="data_" value="{{data}}">
+    <label class="sr-only" for="inlineFormInput">Até</label>
+    <input type="date" class="form-control mb-2 mr-sm-2 mb-sm-0" id="data_f" name="data_f" value="{{data}}">
+    <button type="submit" class="btn btn-primary">Gerar Relatório</button>
+    </div>
+    </div>
+</form>
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{%load static%}
+
+{% load django_bootstrap_breadcrumbs %}
+
+{% block breadcrumbs %}
+    {{ block.super }}
+    {% breadcrumb "Lista de Bolsistas" "list_bolsista" %}
+{% endblock %}
+
+
+{%block content%}
+{% render_breadcrumbs %}
+    <legend>Bolsistas</legend>
+<a href="{%url 'app:create_bolsista'%}"><button class="btn btn-primary">Cadastrar Bolsista
+</button></a>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Nome</th>
+            <th>Orientador</th>
+            <th>RFID</th>
+            <th>Editar</th>
+            <th>Remover</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for bolsista in bolsistas %}
+            <tr>
+                <td>{{ bolsista.nome }}</td>
+                <td>{{ bolsista.orientador.nome}}</td>
+                <td>{{bolsista.cartao_rfid}}</td>
+                <td><a href="{%url 'app:update_bolsista' bolsista.id%}"><img alt="" src="{% static 'img/edit.png'%}"></a></td>
+                <td><a href="{%url 'app:delete_bolsista' bolsista.id%}"><img alt="" src="{% static 'img/rubbish.png'%}" width="15" height="15"></a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{%load static%}
+
+{% load django_bootstrap_breadcrumbs %}
+
+{% block breadcrumbs %}
+    {{ block.super }}
+    {% breadcrumb "Orientador" "cad_professor" %}
+{% endblock %}
+
+
+{%block content%}
+{% render_breadcrumbs %}
+<form method="post">
+    {%csrf_token%}
+    {% for error in form.non_field_errors %}
+    <div class="form-group has-errors text-danger small">
+        {{error}}
+    </div>
+    {%endfor%}
+    {% for field in form %}
+     <div class="form-group">
+        <div class="row">
+            <div class="col-md-1 col-sm-1">
+              {{ field.label_tag }}
+            </div>
+            <div class="col-md-2 col-sm-2" style="text-transform: uppercase;">
+                {{ field }}
+            </div>
+        </div>
+        {{ field.errors }}
+
+    </div>
+    {% endfor %}
+
+    <button type="submit" class="btn btn-primary">Salvar</button>
+    </div>
+</form>
+{% endblock %}

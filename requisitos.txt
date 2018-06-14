@@ -1,0 +1,6 @@
+Django
+django-bootstrap-breadcrumbs
+django-xhtml2pdf
+django-extensions
+django-widget-tweaks
+

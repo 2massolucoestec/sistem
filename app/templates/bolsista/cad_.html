@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{%load static%}
+
+{% load django_bootstrap_breadcrumbs %}
+
+{% block breadcrumbs %}
+    {{ block.super }}
+    {% breadcrumb "Cadastrar Bolsista" "cad_bolsista" %}
+{% endblock %}
+
+
+{%block content%}
+{% render_breadcrumbs %}
+<p>{{d}}</p>
+{% endblock %}

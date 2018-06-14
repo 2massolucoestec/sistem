@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{%load static%}
+
+{% load django_bootstrap_breadcrumbs %}
+
+{% block breadcrumbs %}
+    {{ block.super }}
+    {% breadcrumb "Lista de Orientadores" "list_orientador" %}
+{% endblock %}
+
+
+{%block content%}
+{% render_breadcrumbs %}
+
+    <legend>Orientadores</legend>
+    <a href="{%url 'app:create_orientador'%}"><button class="btn btn-primary">Cadastrar Orientador
+</button></a>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Nome</th>
+            <th>Editar</th>
+            <th>Remover</th>
+        </thead>
+        <tbody>
+        {% for orientador in orientadores %}
+            <tr>
+                <td>{{ orientador.nome }}</td>
+                <td><a href="{%url 'app:update_orientador' orientador.id%}"><img alt="" src="{% static 'img/edit.png'%}"></a></td>
+                <td><a href="{%url 'app:delete_orientador' orientador.id%}"><img alt="" src="{% static 'img/rubbish.png'%}" width="15" height="15"></a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

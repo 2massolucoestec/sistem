@@ -1,0 +1,91 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+ <html>
+     <head>
+         <title>Relatório</title>
+         <style type="text/css">
+             body {
+                 font-weight: 200;
+                 font-size: 14px;
+             }
+             .header {
+                 font-size: 20px;
+                 font-weight: 100;
+                 text-align: center;
+                 color: #007cae;
+             }
+             .title {
+                 font-size: 22px;
+                 font-weight: 100;
+                /* text-align: right;*/
+                padding: 10px 20px 0px 20px;  
+             }
+             .title span {
+                font-size: 18px;
+                 color: #007cae;
+                 padding-bottom: 10px;
+             }
+             .details {
+                 padding: 10px 20px 0px 20px;
+                 text-align: left !important;
+                 /*margin-left: 40%;*/
+             }
+             .hrItem {
+                 border: none;
+                 height: 1px;
+                 /* Set the hr color */
+                 color: #333; /* old IE */
+                 background-color: #fff; /* Modern Browsers */
+             }
+             th{
+                text-align: center;
+             }
+             tbody{
+                text-align: center;
+             }
+             h2{
+                text-align: right;
+                padding-right: 45px;
+             }
+         </style>
+     </head>
+     <body>
+         <div class='wrapper'>
+         {%if acessos.exists%}
+             <div class='header'>
+                 <p class='title'>RELATÓRIO POR PERIODO</p>
+                 <span>{{titulo}} DE {{data_inicio}} À {{data_fim}}</span>
+             </div>
+         <div>
+        <table class="table">
+        <thead>
+        <tr>
+            {%if is_todos == '1'%}
+            <th>Bolsista</th>
+            {%endif%}
+            <th>Data</th>
+            <th>Entrada</th>
+            <th>Saída</th>
+            <th>Permanência</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for acesso in acessos %}
+            <tr>
+                {%if is_todos == '1'%}
+                <td>{{acesso.bolsista}}</td>
+                {%endif%}
+                <td>{{acesso.data}}</td>
+                <td>{{ acesso.hora_entrada}}</td>
+                <td>{{ acesso.hora_saida }}</td>
+                <td>{{ acesso.total_horas}}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <h2>Total {{ th.total }}</h2>
+    </div>
+     {%else%}
+     <p class='title'>NÃO HÁ REGISTRO DE {{titulo}} DE {{data_inicio}} À {{data_fim}}</p>
+     {%endif%}
+     </body>
+ </html>

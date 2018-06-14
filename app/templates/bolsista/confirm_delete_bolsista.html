@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{%load static%}
+
+{% load django_bootstrap_breadcrumbs %}
+
+{% block breadcrumbs %}
+    {{ block.super }}
+    {% breadcrumb "Remover Bolsista" "delete_bolsista" %}
+{% endblock %}
+
+
+{%block content%}
+{% render_breadcrumbs %}
+<form method="post">
+    {%csrf_token%}
+
+<h2>Deseja realmente excluir {{bolsista.nome}} ?</h2>
+<button type="submit" class="btn btn-success">Confirmar</button>
+<a href="{%url 'app:list_bolsista'%}" class="btn btn-danger cancel-link">Cancelar</a>
+    </div>
+</form>
+{% endblock %}
