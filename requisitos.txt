@@ -1,6 +1,9 @@
-Django
+Django==2.0.4
 django-bootstrap-breadcrumbs
 django-xhtml2pdf
 django-extensions
 django-widget-tweaks
+pyserial
+django-bootstrap4
+xhtml2pdf
 
