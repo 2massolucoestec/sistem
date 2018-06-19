@@ -49,11 +49,20 @@ footer {
 .dropdown-item{
   color: white;}
 
-
-input{
-    text-transform:uppercase;
-}
-
 ul.errorlist {
     color: red;
+}
+
+#rf{
+  margin: 0px;
+  cursor: pointer; 
+  color: blueviolet;
+}
+
+#rf:hover {
+    color: blue;
+}
+
+p#rf:hover {
+    color: blue;
 }

@@ -12,42 +12,65 @@
 
     <!-- Bootstrap core CSS -->
     <link href="{% static 'css/bootstrap/bootstrap.min.css'%}" rel="stylesheet">
-
+<link href="{% static 'css/sty.css'%}" rel="stylesheet">
     <!-- Custom styles for this template -->
-    <link href="{% static 'css/styles.css' %}" rel="stylesheet">
+
   </head>
 
-  <body style="background: #373435;"">
-    <form class="form-signin" method="post">
+<body style="background: #373435;"">
+{%load bootstrap4%}
 
-      <div class="text-center mb-4">
-        <img class="mb-4" src="{%static 'img/img_leds.png'%}" alt="" width="250">
+<form method="post" class="form col-md-4">
 
-      </div>
-    {%csrf_token%}
+ <div class="text-center mb-4">
+        <img class="mb-4" src="{%static 'img/img_leds.png'%}" alt="" width="300">
+
+</div>
+   {%csrf_token%}
+{% load widget_tweaks %}
+
+{% for hidden_field in form.hidden_fields %}
+  {{ hidden_field }}
+{% endfor %}
+
+{% if form.non_field_errors %}
+
+  <div class="alert alert-danger" role="alert">
     {% for error in form.non_field_errors %}
-    <div class="form-group has-errors text-warning large" >
-        {{error}}
-    </div>
-    {%endfor%}
-
-    {% for field in form %}
-    <div class="form-group">
-      <div class="log">
-        <label style="color: white;">{{ field.label_tag }}</label>
-        </div>
-        <div class="log">
-        {{field}}
-        </div>
-        <div class="log">
-        {{ field.errors }}
-        </div>
-    </div>
+      {{ error }}
     {% endfor %}
+  </div>
+{% endif %}
 
-      <button class="btn btn-lg btn-primary btn-block" type="submit">Entrar</button>
+{% for field in form.visible_fields %}
+  <div class="form-group">
+    {{ field.label_tag }}
 
-    </form>
+    {% if form.is_bound %}
+
+      {% if field.errors %}
+        {% render_field field class="form-control col-md-12 is-invalid" %}
+        {% for error in field.errors %}
+          <div class="invalid-feedback">
+            {{ error }}
+          </div>
+        {% endfor %}
+      {% else %}
+        {% render_field field class="form-control col-md-12 is-valid" %}
+      {% endif %}
+    {% else %}
+      {% render_field field class="form-control col-md-12" %}
+    {% endif %}
+
+    {% if field.help_text %}
+      <small class="form-text text-muted">{{ field.help_text|safe }}</small>
+    {% endif %}
+</div>
+{% endfor %}
+{% buttons %}
+        <button type="submit" class="col-md-12 btn btn-primary">Entrar</button>
+{% endbuttons %}
+</form>
 
     <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
     <script src="{% static 'js/popper.min.js' %}"></script>

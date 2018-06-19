@@ -5,13 +5,13 @@
 
 {% block breadcrumbs %}
     {{ block.super }}
-    {% breadcrumb "Orientador" "cad_professor" %}
+    {% breadcrumb "Cadastrar Orientador" "cad_professor" %}
 {% endblock %}
 
 
 {%block content%}
 {% render_breadcrumbs %}
-<form method="post">
+<!--<form method="post">
     {%csrf_token%}
     {% for error in form.non_field_errors %}
     <div class="form-group has-errors text-danger small">
@@ -36,4 +36,60 @@
     <button type="submit" class="btn btn-primary">Salvar</button>
     </div>
 </form>
+-->
+
+{% load bootstrap4%}
+<form method="post">
+    {%csrf_token%}
+{% load widget_tweaks %}
+
+{% for hidden_field in form.hidden_fields %}
+  {{ hidden_field }}
+{% endfor %}
+
+{% if form.non_field_errors %}
+  <div class="alert alert-danger" role="alert">
+    {% for error in form.non_field_errors %}
+      {{ error }}
+    {% endfor %}
+  </div>
+{% endif %}
+
+{% for field in form.visible_fields %}
+<h2>Cadastro Orientador</h2>
+  <div class="form-group">
+    {{ field.label_tag }}
+
+    {% if form.is_bound %}
+
+      {% if field.errors %}
+        {% render_field field class="form-control col-md-6 is-invalid" %}
+        {% for error in field.errors %}
+          <div class="invalid-feedback">
+            {{ error }}
+          </div>
+        {% endfor %}
+      {% else %}
+        {% render_field field class="form-control col-md-6 is-valid" %}
+      {% endif %}
+    {% else %}
+      {% render_field field class="form-control col-md-6" %}
+    {% endif %}
+
+    {% if field.help_text %}
+      <small class="form-text text-muted">{{ field.help_text }}</small>
+    {% endif %}
+</div>
+{% endfor %}
+{% buttons %}
+        <button type="submit" class="btn btn-primary">Salvar</button>
+{% endbuttons %}
+</form>
 {% endblock %}
+{%block javascript%}
+<script>
+    $('input').keyup(function(){
+    this.value = this.value.toUpperCase();
+});
+</script>
+{%endblock%}

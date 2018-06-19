@@ -5,7 +5,7 @@
 
 {% block breadcrumbs %}
     {{ block.super }}
-    {% breadcrumb "Lista de Orientadores" "list_orientador" %}
+    {% breadcrumb "Lista de Orientadores" "/orientador/list_orientador/" %}
 {% endblock %}
 
 
@@ -13,21 +13,21 @@
 {% render_breadcrumbs %}
 
     <legend>Orientadores</legend>
-    <a href="{%url 'app:create_orientador'%}"><button class="btn btn-primary">Cadastrar Orientador
+    <a href="{%url 'app:create_orientador'%}"><button class="btn btn-primary btn-sm">Cadastrar Orientador
 </button></a>
     <table class="table">
         <thead>
         <tr>
             <th>Nome</th>
-            <th>Editar</th>
-            <th>Remover</th>
+            <th></th>
+            <th></th>
         </thead>
         <tbody>
         {% for orientador in orientadores %}
             <tr>
                 <td>{{ orientador.nome }}</td>
-                <td><a href="{%url 'app:update_orientador' orientador.id%}"><img alt="" src="{% static 'img/edit.png'%}"></a></td>
-                <td><a href="{%url 'app:delete_orientador' orientador.id%}"><img alt="" src="{% static 'img/rubbish.png'%}" width="15" height="15"></a></td>
+                <td><a href="{%url 'app:update_orientador' orientador.id%}"><!--<img alt="" src="{% static 'img/edit.png'%}">--><button class="btn btn-dark btn-sm">Editar</button></a></td>
+                <td><a href="{%url 'app:delete_orientador' orientador.id%}"><!--<img alt="" src="{% static 'img/rubbish.png'%}" width="15" height="15">--><button class="btn btn-danger btn-sm">Remover</button></a></td>
             </tr>
         {% endfor %}
         </tbody>

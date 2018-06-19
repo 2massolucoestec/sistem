@@ -1,38 +1,49 @@
 {% extends "base.html" %}
-{%load static%}
+{%load static%}{% load django_bootstrap_breadcrumbs %}{% block breadcrumbs %}{{ block.super }}{% breadcrumb "Cadastrar Usuário" "cad_bolsista" %}{% endblock %}{%block content%}{% render_breadcrumbs %}
+{% load bootstrap4%}
+<h2>Cadastro Usuário</h2>
+<form method="post">
+    {%csrf_token%}
+{% load widget_tweaks %}
 
-{% load django_bootstrap_breadcrumbs %}
+{% for hidden_field in form.hidden_fields %}
+  {{ hidden_field }}
+{% endfor %}
 
-{% block breadcrumbs %}
-    {{ block.super }}
-    {% breadcrumb "Usuario Comum" "registrar" %}
-{% endblock %}
-
-
-{%block content%}
-{% render_breadcrumbs %}
-
-{% for error in form.non_field_errors %}
-    <div class="form-group has-errors text-danger small">
-        {{error}}
-    </div>
-    {%endfor%}
-    {% for field in form %}
-     <div class="form-group">
-        <div class="row">
-            <div class="col-md-3 col-sm-3">
-              {{ field.label_tag }}
-            </div>
-            <div class="col-md-2 col-sm-2" style="text-transform: uppercase;">
-                {{ field }}
-            </div>
-        </div>
-        {{ field.errors }}
-
-    </div>
+{% if form.non_field_errors %}
+  <div class="alert alert-danger" role="alert">
+    {% for error in form.non_field_errors %}
+      {{ error }}
     {% endfor %}
+  </div>
+{% endif %}
 
-    <button type="submit" class="btn btn-primary">Salvar</button>
-    </div>
-</form>
-{% endblock %}
+{% for field in form.visible_fields %}
+  <div class="form-group">
+    {{ field.label_tag }}
+
+    {% if form.is_bound %}
+
+      {% if field.errors %}
+        {% render_field field class="form-control is-invalid col-md-6" %}
+        {% for error in field.errors %}
+          <div class="invalid-feedback">
+            {{ error }}
+          </div>
+        {% endfor %}
+      {% else %}
+        {% render_field field class="form-control is-valid col-md-6" %}
+      {% endif %}
+    {% else %}
+      {% render_field field class="form-control col-md-6" %}
+    {% endif %}
+
+    {% if field.help_text %}
+      <small class="form-text text-muted">{{ field.help_text|safe }}</small>
+    {% endif %}
+</div>
+{% endfor %}
+{% buttons %}
+        <button type="submit" class="btn btn-primary">Salvar</button>
+{% endbuttons %}
+</form>{% endblock %}
