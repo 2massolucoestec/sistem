@@ -18,8 +18,23 @@ from django.http import HttpResponse
 from django.db.models import Sum
 from django.views.generic import View
 from app.utils import render_to_pdf #created in step 4
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm
+from django.contrib.auth.models import User
 from django.contrib.auth.decorators import user_passes_test
+
+
+def list_usuario(request):
+	usuarios = User.objects.all()
+	return render(request, 'usuario/list_usuario.html',{'usuarios':usuarios})
+
+def edit_usuario(request, pk):
+	usuario = User.objects.get(pk=pk)
+	form = UserChangeForm(request.POST, instance = usuario)
+
+	if form.is_valid():
+		form.save()
+		return redirect('app:list_usuario')
+	return render(request,"registrar.html",{'form':form})
 
 @user_passes_test(lambda u: u.is_superuser)
 def registrar(request):
@@ -29,8 +44,9 @@ def registrar(request):
         form = UserCreationForm(request.POST)
         
         if form.is_valid(): # se o formulario for valido
-            form.save() # cria um novo usuario a partir dos dados enviados 
-            return redirect("/login/") # redireciona para a tela de login
+            form.save() # cria um novo usuario a partir dos dados enviados
+            messages.info(request, 'Usuário cadastrado com sucesso!')
+            return redirect("/register/") # redireciona para a tela de login
         else:
             # mostra novamente o formulario de cadastro com os erros do formulario atual
             return render(request, "registrar.html", {"form": form})

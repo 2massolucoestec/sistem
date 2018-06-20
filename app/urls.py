@@ -25,6 +25,9 @@ urlpatterns = [
 	url(r'^acesso/relatorio_bolsista/(?P<pk>\d+)$', views.RelatorioBolsista.as_view(), name='RelatorioBolsista'),
 	url(r'^acesso/relatorio_periodo/(?P<data_ini>[\w.@+-]+)/(?P<data_fim>[\w.@+-]+)/$', views.RelatorioPeriodo.as_view(), name='RelatorioPeriodo'),
 
+url(r'^usuario/list_usuario/$', views.list_usuario, name='list_usuario'),
+
+url(r'^usuario/editar_usuario/(?P<pk>\d+)$', views.edit_usuario, name='edit_usuario'),
 
 	url(r'^bolsista/$', views.list_bolsista, name='list_bolsista'),
     url(r'^bolsista/cad_bolsista/$', views.create_bolsista, name='create_bolsista'),	

@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{%load static%}
+
+{% load django_bootstrap_breadcrumbs %}
+
+{% block breadcrumbs %}
+    {{ block.super }}
+    {% breadcrumb "Lista de Bolsistas" "/bolsista/list_bolsista/" %}
+{% endblock %}
+
+
+{%block content%}
+{% render_breadcrumbs %}
+    <legend>Bolsistas</legend>
+<a href="{%url 'app:create_bolsista'%}"><button class="btn btn-primary btn-sm">Cadastrar Bolsista
+</button></a>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Username</th>
+	    <th></th>
+	    <th></th>
+            
+        </tr>
+        </thead>
+        <tbody>
+        {% for usuario in usuarios %}
+            <tr>
+                <td>{{ usuario.username }}</td>
+                
+                <td><a href="{%url 'app:edit_usuario' usuario.id%}"><button class="btn btn-dark btn-sm">Editar</button></a></td>
+                <td><a href="#"><button class="btn btn-danger btn-sm">Remover</button></a></td>
+            </tr>
+
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
