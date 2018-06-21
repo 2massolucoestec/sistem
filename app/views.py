@@ -23,6 +23,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import user_passes_test
 
 
+
 def list_usuario(request):
 	usuarios = User.objects.all()
 	return render(request, 'usuario/list_usuario.html',{'usuarios':usuarios})
@@ -91,6 +92,7 @@ def modalt(request):
 @login_required(login_url='/login')
 def home(request):
 	if request.user.is_superuser:
+		messages.error(request, "Huge success!")
 		return render(request, 'home_admin.html')
 	else:
 		bolsistas = Bolsista.objects.all()
@@ -485,6 +487,7 @@ def teste_aja2(request):
 							acesso.hora_saida = timezone.localtime(timezone.now()).time()
 							acesso.total_horas = timedelta(hours = acesso.hora_saida.hour, minutes=acesso.hora_saida.minute, seconds=acesso.hora_saida.second) - timedelta(hours = acesso.hora_entrada.hour, minutes=acesso.hora_entrada.minute, seconds=acesso.hora_entrada.second)
 							acesso.save()
+							messages.error(request, "Huge success!")
 							message = "Saída registrada"
 							return HttpResponse(json.dumps({'message':message}), content_type='application/json')
 						else:
@@ -493,6 +496,7 @@ def teste_aja2(request):
 							novo_acesso.data = date.today()
 							novo_acesso.hora_entrada = timezone.localtime(timezone.now()).time()
 							novo_acesso.save()
+							messages.error(request, "Huge success!")
 							message = "Entrada Registrada"
 							return HttpResponse(json.dumps({'message':message}), content_type='application/json')
 					else:
@@ -505,6 +509,7 @@ def teste_aja2(request):
 						return HttpResponse(json.dumps({'message':message}), content_type='application/json')
 				except Bolsista.DoesNotExist:
 					message = "Cartão não está relacionado a nenhum bolsista"
+					messages.error(request, "Huge success!")
 					return HttpResponse(json.dumps({'message':message, 'key_value':key_value}), content_type='application/json')
 		#return render(request, 'teste.html', {'key_value':key_value})
 	except serial.SerialException as e:

@@ -17,6 +17,8 @@
 
     <link href="{% static 'css/bootstrap/bootstrap.min.css'%}" rel="stylesheet">
     <link href="{% static 'css/custom2.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="{%static 'css/jquery.toastmessage.css'%}">
+
   </head>
   <body>
       <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
@@ -45,10 +47,13 @@
           <div class="col-x1-12 col-lg-12 col-md-12 col-sm-12">
 		
 		
-		<img src="{%static 'img/img_ledss.png'%}" class="img-fluid" height="200px">
-		<h2 style="color:gray;">Laboratório de Sistemas Embarcados e Distribuídos</h2>
+		{% for message in messages %}
+    <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+{% endfor %}
 	  </div>
 	</div>
+
+
       <div class="row" align="center">
           <div class="col-x1-4 col-lg-4 col-md-4 col-sm-12">
 
@@ -81,5 +86,14 @@
     <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
     <script src="{% static 'js/popper.min.js' %}"></script>
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
+
+<script src="{%static '/js/jquery.toastmessage.js'%}"></script>
+<script type="text/javascript">
+	{% for message in messages %}    
+		$().toastmessage('showSuccessToast', "{{ message }}");
+	{%endfor%}
+</script>
+
+
   </body>
 </html>

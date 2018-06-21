@@ -65,14 +65,18 @@
 
     {% if form.is_bound %}
 
-      {% if field.errors %}
+    {% if field.errors %}
 
       {% if field.name == 'nome' %}
       
-        {% render_field field class="form-control col-md-6 is-invalid" %}
+        	{% render_field field class="form-control col-md-6 is-invalid" %}
         {%else%}
-        {% render_field field class="form-control col-md-3 is-invalid" %}
-        {%endif%}
+        	{% if field.name == 'cartao_rfid' %}
+        	{% render_field field class="form-control col-md-3 is-invalid" placeholder="CLICK E APRESENTE O CARTÃO" %}
+        	{%else%}
+        	{% render_field field class="form-control col-md-3 is-invalid"%}
+        	{%endif%}
+      {%endif%}
         {% for error in field.errors %}
           <div class="invalid-feedback">
             {{ error }}
@@ -82,28 +86,31 @@
       {% if field.name == 'nome' %}
       
         {% render_field field class="form-control col-md-6 is-valid" %}
-        {%else%}
+      {%else%}
         {% render_field field class="form-control col-md-3 is-valid" %}
-        {%endif%}
-        {% endif %}
+      {%endif%}
+    {% endif %}
     {% else %}
     {% if field.name == 'nome' %}
       {% render_field field class="form-control col-md-6" %}
     {%else%}
-    {% render_field field class="form-control col-md-3" %}
+    {% if field.name == 'cartao_rfid'  %}
+    	{% render_field field class="form-control col-md-3" placeholder="CLICK E APRESENTE O CARTÃO" %}
+    	{%else%}
+    	{% render_field field class="form-control col-md-3" %}
+    	{%endif%}
     {%endif%}
     {% endif %}
 
     {% if field.help_text %}
       <small class="form-text text-muted">{{ field.help_text }}</small>
     {% endif %}
-{% if field.name == 'cartao_rfid' %}<p id="rf" >Click aqui, posicione o cartão RFID e aguarde até a leitura ser concluida</p>{%endif%}
+<!--{% if field.name == 'cartao_rfid' %}<p id="rf" >Click aqui, posicione o cartão RFID e aguarde até a leitura ser concluida</p>{%endif%}-->
   </div>
 
 {% endfor %}
 {% buttons %}
       <button type="submit" class="btn btn-primary">Salvar</button>
-<button type="submit" class="btn btn-outline-dark">Limpar</button>
 {% endbuttons %}
 </form>
 
@@ -128,6 +135,25 @@ $(document).ready(function(){
         $("#wait").css("display", "none");
     });
     $("#rf").on('click',function () {
+      $.ajax({
+        url: '/teste_aja/',
+        dataType: 'json',
+        success: function (data) {
+          if(data.key_value == 'undefined' || data.key_value == 'UNDEFINED'|| data.key_value == ''){
+                alert('Erro ao ler cartão, tente novamente.');
+            }else{
+                
+                document.getElementById("id_cartao_rfid").value = data.key_value;
+            }
+        },
+        error: function(data) {
+                    alert("Erro na leitura, verifique se o arduino está conectado corretamente!");
+        }
+      });
+
+    });
+
+      $("#id_cartao_rfid").on('click',function () {
       $.ajax({
         url: '/teste_aja/',
         dataType: 'json',
