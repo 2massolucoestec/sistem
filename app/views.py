@@ -30,7 +30,7 @@ def list_usuario(request):
 
 def edit_usuario(request, pk):
 	usuario = User.objects.get(pk=pk)
-	form = UserChangeForm(request.POST, instance = usuario)
+	form = UserCreationForm(request.POST, instance = usuario)
 
 	if form.is_valid():
 		form.save()
