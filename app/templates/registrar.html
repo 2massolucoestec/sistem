@@ -47,3 +47,14 @@
         <button type="submit" class="btn btn-primary">Salvar</button>
 {% endbuttons %}
 </form>{% endblock %}
+
+<script>
+{% for message in messages %}
+	{%if message.tags == 'success' %}
+	$().toastmessage('showSuccessToast', "{{message}}");
+	{%endif%}
+	{%if message.tags == 'error' %}
+	$().toastmessage('showErrorToast', "{{message}}");
+	{%endif%}
+
+{%endfor%}
