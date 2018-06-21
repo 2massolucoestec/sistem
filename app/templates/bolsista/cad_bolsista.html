@@ -95,7 +95,7 @@
       {% render_field field class="form-control col-md-6" %}
     {%else%}
     {% if field.name == 'cartao_rfid'  %}
-    	{% render_field field class="form-control col-md-3" placeholder="CLICK E APRESENTE O CARTÃO" %}
+    	{% render_field field class="form-control col-md-3" hidden="True" placeholder="CLICK E APRESENTE O CARTÃO" %}
     	{%else%}
     	{% render_field field class="form-control col-md-3" %}
     	{%endif%}
@@ -105,7 +105,15 @@
     {% if field.help_text %}
       <small class="form-text text-muted">{{ field.help_text }}</small>
     {% endif %}
-<!--{% if field.name == 'cartao_rfid' %}<p id="rf" >Click aqui, posicione o cartão RFID e aguarde até a leitura ser concluida</p>{%endif%}-->
+{% if field.name == 'cartao_rfid' %}
+{% buttons %}
+      <button type="button" id="btn_rfid" class="btn btn-secondary btn-sm">LER CARTÃO</button>
+{% endbuttons %}
+</form>
+<!--<p id="rf" >Click aqui, posicione o cartão RFID e aguarde até a leitura ser concluida</p>-->
+
+{%endif%}
+
   </div>
 
 {% endfor %}
@@ -166,11 +174,34 @@ $(document).ready(function(){
             }
         },
         error: function(data) {
-                    alert("Erro na leitura, verifique se o arduino está conectado corretamente!");
+		    $().toastmessage('showErrorToast', "Erro na leitura, verifique se o arduino está conectado corretamente e tente novamente!");
+ 
         }
       });
 
     });
+
+      $("#btn_rfid").on('click',function () {
+      $.ajax({
+        url: '/teste_aja/',
+        dataType: 'json',
+        success: function (data) {
+          if(data.key_value == 'undefined' || data.key_value == 'UNDEFINED'|| data.key_value == ''){
+                alert('Erro ao ler cartão, tente novamente.');
+            }else{
+                
+                document.getElementById("id_cartao_rfid").value = data.key_value;
+            }
+        },
+        error: function(data) {
+		    document.getElementById("id_cartao_rfid").removeAttribute("hidden");
+		    $().toastmessage('showErrorToast', "Erro na leitura, verifique se o arduino está conectado corretamente e tente novamente!");
+ 
+        }
+      });
+
+    });
+
 });
 
 </script>

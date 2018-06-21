@@ -32,10 +32,21 @@
           </form>
         </div>
       </nav>
-    <div class="container-fluid">
-      <h2 id="id">Apresente o cartão para registrar o acesso</h2>
-    </div>
-    <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+  <div class="container-fluid">
+    {% load django_bootstrap_breadcrumbs %}
+
+    {% block breadcrumbs %}
+        {% clear_breadcrumbs %}
+        {% breadcrumb "Home" "/" %}
+    {% endblock %}
+
+
+
+    {% block content %}
+    {% render_breadcrumbs %}
+    {% endblock %}
+
+<script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
     <script src="{% static 'js/popper.min.js' %}"></script>
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
     {%block javascript%}
@@ -61,7 +72,7 @@
        }
       },
       error: function(data) {
-        $().toastmessage('showErrorToast', "Erro na leitura, verifique se o arduino está conectado corretamente!");
+        alert("Erro na leitura, verifique se o arduino está conectado corretamente!");
 	location.reload();
         
       }
@@ -71,3 +82,8 @@
     {%endblock%}
   </body>
 </html>
+
+
+
+
+
