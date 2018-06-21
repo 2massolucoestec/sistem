@@ -52,7 +52,7 @@ def registrar(request):
             # mostra novamente o formulario de cadastro com os erros do formulario atual
            messages.error(request, "O usuário não foi cadastrado")
 
-            return render(request, "registrar.html", {"form": form})
+           return render(request, "registrar.html", {"form": form})
     
     # se nenhuma informacao for passada, exibe a pagina de cadastro com o formulario
     return render(request, "registrar.html", {"form": UserCreationForm() })
