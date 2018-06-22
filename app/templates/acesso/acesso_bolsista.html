@@ -16,14 +16,14 @@
         <thead>
         <tr>
             <th>Nome</th>
-            <th>Gerar Relatorio</th>
+            <th></th>
         </tr>
         </thead>
         <tbody>
         {% for bolsista in bolsistas %}
             <tr>
                 <td>{{ bolsista.nome }}</td>
-                <td><a href="{%url 'app:acesso_bolsista' bolsista.id%}"><img alt="" src="{% static 'img/filez.png'%}" width="15" height="15"></a></td>
+                <td><a href="{%url 'app:acesso_bolsista' bolsista.id%}"><button type="submit" class="btn btn-success btn-sm">Gerar PDF</button></a></td>
             </tr>
         {% endfor %}
         </tbody>

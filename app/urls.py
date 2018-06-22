@@ -2,10 +2,10 @@ from django.conf.urls import include, url
 from django.contrib.auth import views as auth_views
 from app import views
 
+
 app_name = 'app'
 
 urlpatterns = [
-
 
 	url(r'^$', views.home, name='home'),
 #	url(r'^trfid/$', views.test_rfid, name='test_rfid'),
@@ -59,7 +59,11 @@ url(r'^usuario/editar_usuario/(?P<pk>\d+)$', views.edit_usuario, name='edit_usua
 	url(r'^teste_cadastro/$', views.create_bolsista2, name='create_bolsista2'),
 	url(r'^teste_/$', views.create_bolsista3, name='create_bolsista3'),
 	url(r'^t/$', views.t, name='t'),
+
 	url(r'^register/$', views.registrar, name='registrar'),
 
+	url(r'^usuario/edit_user/$', views.edit_user, name='edit_user'),
+
+	url(r'^usuario/edit_password/$', views.edit_password, name='edit_password'),
 
 ]

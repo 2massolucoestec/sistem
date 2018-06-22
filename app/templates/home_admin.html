@@ -33,9 +33,19 @@
             {% if user.is_authenticated %}
 
             <ul class="navbar-nav">
-                <li><a class="nav-link" href="{% url 'app:registrar' %}">Cadastrar Usuário</a></li>
-                
-                <li><a class="nav-link" href="{% url 'app:sair' %}">Sair</a></li>
+<li style="padding-right:10px; "class="nav-item dropdown">
+
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <img src="{%static 'img/user2.png'%}" height="100%" width="auto">
+              </a>
+              <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="{% url 'app:registrar' %}">Cadastrar Novo Usuário</a>
+<div class="dropdown-divider"></div>
+<a class="dropdown-item" href="{%url 'app:edit_user'%}">Editar Conta</a>
+    <a class="dropdown-item" href="{% url 'app:sair' %}">Sair</a>
+  </div>
+            </li>
+
             {% else %}
                 <li class="nav-item"><a class="nav-link" href="#"></a></li>
             {% endif %}

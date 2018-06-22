@@ -7,7 +7,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from django.contrib import messages
-from .forms import OrientadorForm, BolsistaForm, AcessoForm
+from .forms import OrientadorForm, BolsistaForm, AcessoForm, UserForm, CustomUserCreationForm
 from .models import Orientador, Bolsista, Acesso
 from datetime import datetime, time, date, timedelta
 import datetime
@@ -18,44 +18,71 @@ from django.http import HttpResponse
 from django.db.models import Sum
 from django.views.generic import View
 from app.utils import render_to_pdf #created in step 4
-from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.contrib.auth.models import User
+from django.contrib.auth.forms import PasswordChangeForm, UserCreationForm
+
 from django.contrib.auth.decorators import user_passes_test
-
-
 
 def list_usuario(request):
 	usuarios = User.objects.all()
 	return render(request, 'usuario/list_usuario.html',{'usuarios':usuarios})
 
+@login_required(login_url='/login')
 def edit_usuario(request, pk):
 	usuario = User.objects.get(pk=pk)
-	form = UserCreationForm(request.POST, instance = usuario)
+	form = CustomUserCreationForm(request.POST, instance=request.user)
 
 	if form.is_valid():
 		form.save()
 		return redirect('app:list_usuario')
 	return render(request,"registrar.html",{'form':form})
 
+
+@login_required(login_url='/login')
+def edit_password(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)  # Important!
+            messages.success(request, 'Sua senha foi alterada com sucesso!')
+            return redirect('edit_password')
+        else:
+            messages.error(request, 'Não foi possível alterar a senha!')
+    else:
+        form = PasswordChangeForm(request.user)
+    return render(request, 'usuario/edit_password.html', {
+        'form': form
+    })
+
+@login_required(login_url='/login')
+def edit_user(request, template_name="usuario/edit_username.html"):
+	if request.method == "POST":
+#		user = request.user
+		form = UserForm(request.POST, instance = request.user)
+		if form.is_valid():
+			user = form.save(commit=False)
+			user.save()
+			return redirect('/')
+	else:
+		form = UserForm(instance=request.user)
+    
+	return render(request,template_name, {'form':form} )
+
+
 @user_passes_test(lambda u: u.is_superuser)
 def registrar(request):
-    
-    # Se dados forem passados via POST
-    if request.method == 'POST':
-        form = UserCreationForm(request.POST)
-        
-        if form.is_valid(): # se o formulario for valido
-            form.save() # cria um novo usuario a partir dos dados enviados
-            messages.success(request, "Usuário cadastrado com sucesso")
-            return redirect("/register/") # redireciona para a tela de login
-        else:
-            # mostra novamente o formulario de cadastro com os erros do formulario atual
-           messages.error(request, "O usuário não foi cadastrado")
+	if request.method == 'POST':
+		f = UserCreationForm(request.POST)
+		if f.is_valid():
+			f.save()
+			messages.success(request, 'Account created successfully')
+			return redirect('/register')
 
-           return render(request, "registrar.html", {"form": form})
-    
-    # se nenhuma informacao for passada, exibe a pagina de cadastro com o formulario
-    return render(request, "registrar.html", {"form": UserCreationForm() })
+	else:
+        	f = UserCreationForm()
+
+	return render(request, 'registrar.html', {'form': f})
 
 
 
@@ -461,6 +488,7 @@ def teste_aja(request):
 		con_serial.close()
 
 
+
 def teste_aja2(request):
 	path = "/dev/ttyACM0"
 	baudrate = 9600
@@ -486,33 +514,51 @@ def teste_aja2(request):
 					if acesso is not None:
 
 						if acesso.hora_saida == None:
-							acesso.hora_saida = timezone.localtime(timezone.now()).time()
-							acesso.total_horas = timedelta(hours = acesso.hora_saida.hour, minutes=acesso.hora_saida.minute, seconds=acesso.hora_saida.second) - timedelta(hours = acesso.hora_entrada.hour, minutes=acesso.hora_entrada.minute, seconds=acesso.hora_entrada.second)
-							acesso.save()
-							messages.error(request, "Huge success!")
-							message = "Saída registrada"
-							return HttpResponse(json.dumps({'message':message}), content_type='application/json')
+							if acesso.data == date.today():
+								
+								acesso.hora_saida = timezone.localtime(timezone.now()).time()
+								data_saida = date.today()
+								acesso.total_horas = timedelta(hours = acesso.hora_saida.hour, minutes=acesso.hora_saida.minute, seconds=acesso.hora_saida.second, microseconds=1) - timedelta(hours = acesso.hora_entrada.hour, minutes=acesso.hora_entrada.minute, seconds=acesso.hora_entrada.second, microseconds=1)
+								acesso.save()
+								message = "Saída registrada %s"%bolsista.nome
+								tag = "success"
+								return HttpResponse(json.dumps({'message':message, 'tag':tag}), content_type='application/json')
+							else:
+								acesso.delete()
+								novo_acesso = Acesso()
+								novo_acesso.bolsista =  bolsista
+								novo_acesso.data = date.today()
+								novo_acesso.hora_entrada = timezone.localtime(timezone.now()).time()
+								novo_acesso.save()
+								message = "Data fora do ultimo registro da data de entrada. Novo acesso gerado!"
+								tag = "warning"
+								return HttpResponse(json.dumps({'tag':tag,'message':message}), content_type='application/json')
+
+
 						else:
 							novo_acesso = Acesso()
 							novo_acesso.bolsista =  bolsista
 							novo_acesso.data = date.today()
 							novo_acesso.hora_entrada = timezone.localtime(timezone.now()).time()
 							novo_acesso.save()
-							messages.error(request, "Huge success!")
-							message = "Entrada Registrada"
-							return HttpResponse(json.dumps({'message':message}), content_type='application/json')
+							message = "Entrada Registrada %s"%bolsista.nome
+							tag = "success"
+							return HttpResponse(json.dumps({'tag':tag,'message':message}), content_type='application/json')
 					else:
 						novo_acesso = Acesso()
 						novo_acesso.bolsista =  bolsista
 						novo_acesso.data = date.today()
 						novo_acesso.hora_entrada = timezone.localtime(timezone.now()).time()
 						novo_acesso.save()
-						message = "Entrada Registrada"
-						return HttpResponse(json.dumps({'message':message}), content_type='application/json')
+						
+						message = "Entrada Registrada %s"%bolsista.nome
+						return HttpResponse(json.dumps({'tag':tag,'message':message}), content_type='application/json')
 				except Bolsista.DoesNotExist:
+					op = '3'
 					message = "Cartão não está relacionado a nenhum bolsista"
-					messages.error(request, "Huge success!")
-					return HttpResponse(json.dumps({'message':message, 'key_value':key_value}), content_type='application/json')
+					tag = "notice"
+					#messages.warning(request, 'Cartão não está relacionado a nenhum bolsista')
+					return HttpResponse(json.dumps({'tag':tag,'message':message, 'key_value':key_value}), content_type='application/json')
 		#return render(request, 'teste.html', {'key_value':key_value})
 	except serial.SerialException as e:
 		return render(request, 'teste.html', {'key_value':e})

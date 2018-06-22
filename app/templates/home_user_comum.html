@@ -11,6 +11,7 @@
     <title>PROJETO LEDS</title>
     <link href="{% static 'css/bootstrap/bootstrap.min.css'%}" rel="stylesheet">
     <link href="{% static 'css/custom.css' %}" rel="stylesheet"> 
+    <link rel="stylesheet" href="{%static 'css/jquery.toastmessage.css'%}">
   </head>
   <body id="body">
       <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
@@ -38,35 +39,40 @@
     <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
     <script src="{% static 'js/popper.min.js' %}"></script>
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
+  <script src="{%static '/js/jquery.toastmessage.js'%}"></script>
     {%block javascript%}
     <script>
-    $(document).ready(function(){
-    $(document).ajaxStart(function(){
+    $(window).on('load',function(){
+    $(window).ajaxStart(function(){
         $("#id").css("display", "block");
     });
-    $(document).ajaxComplete(function(){
+    $(window).ajaxComplete(function(){
         $("#id").css("display", "none");
     });
     $.ajax({
       url: '/teste_aja2/',
       dataType: 'json',
       success: function (data) {
+
         if(data.key_value == 'undefined' || data.key_value == 'UNDEFINED'|| data.key_value == ''){
           alert('Erro ao ler cartão, tente novamente.');
           location.reload();
         }else{
-          alert(data.message);
-            location.reload();
-            
+		$().toastmessage('showToast', {text : data.message, type : data.tag, position: 'middle-center'});
+		setTimeout(location.reload.bind(location), 3000);
+   
        }
       },
       error: function(data) {
-        $().toastmessage('showErrorToast', "Erro na leitura, verifique se o arduino está conectado corretamente!");
-	location.reload();
+        $().toastmessage('showErrorToast', "Erro na leitura, verifique se o arduino está conectado corretamente e tente novamente!");
+
+setTimeout(location.reload.bind(location), 4000);
+	
         
       }
       });
     });
+
     </script>
     {%endblock%}
   </body>

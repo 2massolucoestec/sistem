@@ -4,6 +4,11 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 
+class UserForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['username']
+
 class CustomUserCreationForm(forms.Form):
     username = forms.CharField(label='Usuário', min_length=4, max_length=150)
     email = forms.EmailField(label='Email')

@@ -122,7 +122,7 @@
 {% endbuttons %}
 </form>
 
-<div id="wait" style="display:none;width:69px;height:89px;;position:absolute;top:50%;left:50%;padding:2px;"><img src="{%static 'img/load.gif'%}" width="64" height="64" /><br>Aguarde</div>
+<div id="wait" style="display:none;width:69px;height:89px;;position:absolute;top:50%;left:45%;padding:2px;"><img src="{%static 'img/load.gif'%}" width="64" height="64" /><br>Apresente o cartão</div>
 
 {% endblock %}
 {%block javascript%}
@@ -187,8 +187,9 @@ $(document).ready(function(){
         dataType: 'json',
         success: function (data) {
           if(data.key_value == 'undefined' || data.key_value == 'UNDEFINED'|| data.key_value == ''){
-                alert('Erro ao ler cartão, tente novamente.');
+                $().toastmessage('showErrorToast', "Erro na leitura, verifique se o arduino está conectado corretamente e tente novamente!");
             }else{
+		$().toastmessage('showSuccessToast', "Leitura realizada com sucesso!");
                 document.getElementById("id_cartao_rfid").removeAttribute("hidden");
                 document.getElementById("id_cartao_rfid").value = data.key_value;
             }

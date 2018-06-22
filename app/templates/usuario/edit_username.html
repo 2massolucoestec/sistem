@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{%load static%}
+
+{% load django_bootstrap_breadcrumbs %}
+
+{% block breadcrumbs %}
+{{ block.super }}
+{% breadcrumb "Editar Conta" "/usuario/edit_user/" %}
+{% endblock %}
+
+{%block content%}
+
+{% render_breadcrumbs %}
+{% load bootstrap4%}
+<h2>Editar Conta</h2>
+
+<small class="form-text text-muted">Não são salvas senhas brutas, então não é possível ver a senha, mas você pode trocá-la usando este <a href="{%url 'app:edit_password'%}"><button class="btn btn-link btn-sm">formulário</button></a></small>
+<form method="post">
+    {%csrf_token%}
+{% load widget_tweaks %}
+
+{% for hidden_field in form.hidden_fields %}
+  {{ hidden_field }}
+{% endfor %}
+
+{% if form.non_field_errors %}
+  <div class="alert alert-danger" role="alert">
+    {% for error in form.non_field_errors %}
+      {{ error }}
+    {% endfor %}
+  </div>
+{% endif %}
+
+{% for field in form.visible_fields %}
+  <div class="form-group">
+    {{ field.label_tag }}
+
+    {% if form.is_bound %}
+
+      {% if field.errors %}
+        {% render_field field class="form-control is-invalid col-md-6" %}
+        {% for error in field.errors %}
+          <div class="invalid-feedback">
+            {{ error }}
+          </div>
+        {% endfor %}
+      {% else %}
+        {% render_field field class="form-control is-valid col-md-6" %}
+      {% endif %}
+    {% else %}
+      {% render_field field class="form-control col-md-6" %}
+    {% endif %}
+
+    {% if field.help_text %}
+      <small class="form-text text-muted">{{ field.help_text|safe }}</small>
+    {% endif %}
+</div>
+{% endfor %}
+{% buttons %}
+        <button type="submit" id="btn-salvar" class="btn btn-primary">Salvar</button>
+{% endbuttons %}
+</form>{% endblock %}
+
+<script>
+$("#btn_salvar").on('click',function () {
+{% for message in messages %}
+	{%if message.tags == 'success' %}
+	$().toastmessage('showSuccessToast', "{{message}}");
+	{%endif%}
+	{%if message.tags == 'error' %}
+	$().toastmessage('showErrorToast', "{{message}}");
+	{%endif%}
+ });
+
+{%endfor%}
