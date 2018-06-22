@@ -11,35 +11,7 @@
 
 {%block content%}
 {% render_breadcrumbs %}
-<!--<form method="post">
-    {%csrf_token%}
-    {% for error in form.non_field_errors %}
-    <div class="form-group has-errors text-danger small">
-        {{error}}
-    </div>
-    {%endfor%}
-    {% for field in form %}
-     <div class="form-group">
-        <div class="row">
-            <div class="col-md-2 col-sm-2">
-              {{ field.label_tag }}
-            </div>
-            <div class="col-md-8 col-sm-8">
-                
-                {{ field }} {% if field.name == 'cartao_rfid' %}<p id="rf" >Click aqui, posicione o cartão RFID e aguarde!</p>{%endif%}
-                
-                
-            </div>
 
-        </div>
-            {{ field.errors }}
-    </div>
-    {% endfor %}
-
-    <button type="submit" class="btn btn-primary">Salvar</button>
-    </div>
-</form>
--->
 {% load bootstrap4%}
 
 <h2>Cadastro Bolsista</h2>
@@ -122,7 +94,7 @@
 {% endbuttons %}
 </form>
 
-<div id="wait" style="display:none;width:69px;height:89px;;position:absolute;top:50%;left:45%;padding:2px;"><img src="{%static 'img/load.gif'%}" width="64" height="64" /><br>Apresente o cartão</div>
+<div id="wait" style="display:none;text-align: center; font-size: 25px; align-items: center; width:30%;position:absolute;top:30%;left:35%;padding:2px;"><img src="{%static 'img/radios.gif'%}" /><br>Apresente o cartão</div>
 
 {% endblock %}
 {%block javascript%}
