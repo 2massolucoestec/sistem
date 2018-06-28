@@ -118,8 +118,9 @@
   <script src="{% static 'js/bootstrap.min.js' %}"></script>
   <script src="{%static '/js/jquery.toastmessage.js'%}"></script>
 
-    {%block javascript%}
+    
     <script>
+{%block javascript%}{%endblock%}
       (function($) {
           'use strict';
           $(function() {
@@ -131,7 +132,7 @@
       });
       </script>
 
-    {%endblock%}
+    
 
 
   </body>

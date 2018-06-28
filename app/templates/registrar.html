@@ -48,15 +48,18 @@
 {% endbuttons %}
 </form>{% endblock %}
 
-<script>
-$("#btn_salvar").on('click',function () {
-{% for message in messages %}
+
+{%block javascript%}
+$(document).ready(function(){
+	
+  {% for message in messages %}
 	{%if message.tags == 'success' %}
 	$().toastmessage('showSuccessToast', "{{message}}");
 	{%endif%}
 	{%if message.tags == 'error' %}
 	$().toastmessage('showErrorToast', "{{message}}");
 	{%endif%}
+  {%endfor%}
  });
 
-{%endfor%}
+{%endblock%}
